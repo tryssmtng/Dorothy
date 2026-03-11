@@ -81,6 +81,9 @@ export interface AppSettings {
   terminalFontSize?: number;
   terminalTheme?: 'dark' | 'light';
   statusLineEnabled?: boolean;
+  favoriteProjects?: string[];
+  hiddenProjects?: string[];
+  defaultProjectPath?: string;
 }
 
 export type SettingsSection = 'general' | 'terminal' | 'git' | 'notifications' | 'telegram' | 'slack' | 'jira' | 'socialdata' | 'tasmania' | 'google-workspace' | 'obsidian' | 'permissions' | 'skills' | 'mcp' | 'cli' | 'system';

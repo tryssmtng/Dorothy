@@ -75,6 +75,8 @@ export const DEFAULT_APP_SETTINGS = {
   terminalFontSize: 11,
   terminalTheme: 'dark' as const,
   statusLineEnabled: false,
+  favoriteProjects: [] as string[],
+  hiddenProjects: [] as string[],
   cliPaths: {
     claude: '',
     codex: '',

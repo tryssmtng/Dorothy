@@ -321,6 +321,10 @@ export interface ElectronAPI {
       };
       terminalFontSize?: number;
       terminalTheme?: 'dark' | 'light';
+      statusLineEnabled?: boolean;
+      favoriteProjects?: string[];
+      hiddenProjects?: string[];
+      defaultProjectPath?: string;
       cliPaths?: {
         claude: string;
         codex: string;
@@ -366,6 +370,10 @@ export interface ElectronAPI {
       };
       terminalFontSize?: number;
       terminalTheme?: 'dark' | 'light';
+      statusLineEnabled?: boolean;
+      favoriteProjects?: string[];
+      hiddenProjects?: string[];
+      defaultProjectPath?: string;
       cliPaths?: {
         claude: string;
         codex: string;

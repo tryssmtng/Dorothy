@@ -22,6 +22,7 @@ export const CHANGELOG: Release[] = [
       'New "Response Finished" notification toggle (Stop hook)',
       'Dedicated PermissionRequest and TaskCompleted hook events',
       'Fixed agent status lifecycle: idle on start, working only after user prompt',
+      'Added pinned and favorites projects to the project page, quickly select your default project on create agent and kanban task',
     ],
   },
   {

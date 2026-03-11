@@ -100,6 +100,9 @@ export default function NewChatModal({
   const [showSecondaryProject, setShowSecondaryProject] = useState(false);
   const [selectedSecondaryProject, setSelectedSecondaryProject] = useState<string>('');
   const [customSecondaryPath, setCustomSecondaryPath] = useState('');
+  const [favoriteProjects, setFavoriteProjects] = useState<string[]>([]);
+  const [hiddenProjects, setHiddenProjects] = useState<string[]>([]);
+  const [defaultProjectPath, setDefaultProjectPath] = useState<string>('');
 
   // Step 2: Model
   const [provider, setProvider] = useState<AgentProvider>('claude');
@@ -188,9 +191,23 @@ export default function NewChatModal({
         setDetectedVault(null);
       }
 
-      // Check if Tasmania is enabled in app settings
+      // Load app settings (Tasmania, favorites, default project)
       window.electronAPI?.appSettings?.get().then((settings) => {
         setTasmaniaEnabled(settings?.tasmaniaEnabled || false);
+        if (Array.isArray(settings?.favoriteProjects)) {
+          setFavoriteProjects(settings.favoriteProjects);
+        }
+        if (Array.isArray(settings?.hiddenProjects)) {
+          setHiddenProjects(settings.hiddenProjects);
+        }
+        // Store default project path for sorting
+        if (settings?.defaultProjectPath) {
+          setDefaultProjectPath(settings.defaultProjectPath);
+        }
+        // Auto-select default project if no project pre-selected
+        if (!initialProjectPath && !editAgent && settings?.defaultProjectPath) {
+          setSelectedProject(settings.defaultProjectPath);
+        }
       });
 
       // Load registered obsidian vaults
@@ -392,6 +409,9 @@ export default function NewChatModal({
                 customSecondaryPath={customSecondaryPath}
                 onCustomSecondaryPathChange={handleCustomSecondaryPathChange}
                 onClearSecondary={handleClearSecondary}
+                favoriteProjects={favoriteProjects}
+                hiddenProjects={hiddenProjects}
+                defaultProjectPath={defaultProjectPath}
               />
             )}
 
