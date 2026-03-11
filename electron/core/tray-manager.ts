@@ -1,124 +1,131 @@
-import { Tray, Menu, app, nativeImage } from 'electron';
+import { Tray, nativeImage, NativeImage } from 'electron';
 import * as path from 'path';
-import { agents } from './agent-manager';
-import { getMainWindow } from './window-manager';
-import { TG_CHARACTER_FACES } from '../constants';
-import { isSuperAgent } from '../utils';
+import { toggleTrayPanel, destroyTrayPanel } from './tray-panel-manager';
+import { setTrayAttentionCallback } from '../utils/agents-tick';
 
 let tray: Tray | null = null;
+let normalIcon: NativeImage | null = null;
+let badgeIcon: NativeImage | null = null;
+let showingBadge = false;
 
-const STATUS_EMOJI: Record<string, string> = {
-  running: '🟢',
-  waiting: '🟡',
-  idle: '⚪',
-  completed: '✅',
-  error: '🔴',
-};
-
-const STATUS_SORT_ORDER: Record<string, number> = {
-  running: 0,
-  waiting: 1,
-  error: 2,
-  idle: 3,
-  completed: 4,
-};
-
-export function initTray() {
+function resolveIconPath(): string {
   // __dirname is electron/dist/core/ at runtime, resources are at electron/resources/
-  let iconPath = path.join(__dirname, '..', '..', 'resources', 'trayTemplate.png');
+  // Use the full-color Dorothy logo instead of a monochrome template
+  let iconPath = path.join(__dirname, '..', '..', 'resources', 'trayColor.png');
   // In production, resources are unpacked outside the asar archive
   iconPath = iconPath.replace('app.asar', 'app.asar.unpacked');
-  const icon = nativeImage.createFromPath(iconPath);
-  icon.setTemplateImage(true);
-
-  tray = new Tray(icon);
-  tray.setToolTip('Dorothy');
-  rebuildTrayMenu();
+  return iconPath;
 }
 
-export function rebuildTrayMenu() {
-  if (!tray) return;
+function createBadgeIcon(base: NativeImage): NativeImage {
+  let icon2xPath = path.join(__dirname, '..', '..', 'resources', 'trayColor@2x.png');
+  icon2xPath = icon2xPath.replace('app.asar', 'app.asar.unpacked');
+  const icon2x = nativeImage.createFromPath(icon2xPath);
 
-  const agentList = Array.from(agents.values());
-  const running = agentList.filter(a => a.status === 'running').length;
-  const waiting = agentList.filter(a => a.status === 'waiting').length;
+  // Make the 2x icon circular first
+  const circular = makeCircular(icon2x, 2.0);
 
-  // Build header summary
-  const parts: string[] = [];
-  if (running > 0) parts.push(`${running} running`);
-  if (waiting > 0) parts.push(`${waiting} waiting`);
-  if (parts.length === 0) parts.push(agentList.length > 0 ? 'all idle' : 'no agents');
-  const header = `Dorothy — ${parts.join(', ')}`;
+  // Derive physical pixel dimensions from the bitmap buffer
+  const bitmap = circular.toBitmap();
+  const logicalSize = circular.getSize();
+  const totalPx = bitmap.length / 4;
+  const w = Math.round(Math.sqrt(totalPx * (logicalSize.width / logicalSize.height)));
+  const h = totalPx / w;
 
-  // Sort agents: running first, then waiting, then by sort order
-  const sorted = [...agentList].sort((a, b) => {
-    const orderA = STATUS_SORT_ORDER[a.status] ?? 3;
-    const orderB = STATUS_SORT_ORDER[b.status] ?? 3;
-    return orderA - orderB;
-  });
+  const dotR = Math.max(3, Math.round(w * 0.15));
+  const dotCx = w - dotR - 1;
+  const dotCy = dotR + 1;
 
-  const template: Electron.MenuItemConstructorOptions[] = [
-    { label: header, enabled: false },
-    { type: 'separator' },
-  ];
-
-  if (sorted.length === 0) {
-    template.push({ label: 'No agents configured', enabled: false });
-  } else {
-    for (const agent of sorted) {
-      const isSuper = isSuperAgent(agent);
-      const charEmoji = isSuper ? '👑' : (TG_CHARACTER_FACES[agent.character || ''] || '🤖');
-      const statusEmoji = STATUS_EMOJI[agent.status] || '⚪';
-      const name = agent.name || `Agent ${agent.id.slice(0, 6)}`;
-
-      let label = `${charEmoji} ${name}  ${statusEmoji} ${agent.status}`;
-      if (agent.currentTask && (agent.status === 'running' || agent.status === 'waiting')) {
-        const task = agent.currentTask.length > 40
-          ? agent.currentTask.slice(0, 40) + '…'
-          : agent.currentTask;
-        label += ` — ${task}`;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const dx = x - dotCx;
+      const dy = y - dotCy;
+      if (dx * dx + dy * dy <= dotR * dotR) {
+        const i = (y * w + x) * 4;
+        bitmap[i] = 239;     // R (#ef4444)
+        bitmap[i + 1] = 68;  // G
+        bitmap[i + 2] = 68;  // B
+        bitmap[i + 3] = 255; // A
       }
-
-      const agentId = agent.id;
-      template.push({
-        label,
-        click: () => {
-          const win = getMainWindow();
-          if (win) {
-            win.show();
-            win.focus();
-            win.webContents.send('tray:focus-agent', agentId);
-          }
-        },
-      });
     }
   }
 
-  template.push(
-    { type: 'separator' },
-    {
-      label: 'Show Dorothy',
-      click: () => {
-        const win = getMainWindow();
-        if (win) {
-          win.show();
-          win.focus();
-        }
-      },
-    },
-    {
-      label: 'Quit Dorothy',
-      click: () => {
-        app.quit();
-      },
-    },
-  );
+  return nativeImage.createFromBitmap(bitmap, { width: w, height: h, scaleFactor: 2.0 });
+}
 
-  const menu = Menu.buildFromTemplate(template);
-  tray.setContextMenu(menu);
+function makeCircular(img: NativeImage, scale: number): NativeImage {
+  // toBitmap() returns physical pixels, getSize() returns logical size.
+  // Derive actual pixel dimensions from the buffer to avoid size mismatch.
+  const bitmap = img.toBitmap();
+  const totalPixels = bitmap.length / 4;
+  const logicalSize = img.getSize();
+  // Physical dimensions: logical × scale (or derive from buffer if square)
+  const w = Math.round(Math.sqrt(totalPixels * (logicalSize.width / logicalSize.height)));
+  const h = totalPixels / w;
+
+  const cx = w / 2;
+  const cy = h / 2;
+  const r = Math.min(w, h) / 2;
+
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const dx = x - cx;
+      const dy = y - cy;
+      if (dx * dx + dy * dy > r * r) {
+        bitmap[(y * w + x) * 4 + 3] = 0;
+      }
+    }
+  }
+
+  return nativeImage.createFromBitmap(bitmap, { width: w, height: h, scaleFactor: scale });
+}
+
+export function initTray() {
+  // Use the @2x image with scaleFactor 2.0 so macOS gets full-resolution
+  // pixels on retina displays instead of upscaling the tiny 1x image.
+  let icon2xPath = path.join(__dirname, '..', '..', 'resources', 'trayColor@2x.png');
+  icon2xPath = icon2xPath.replace('app.asar', 'app.asar.unpacked');
+  const rawIcon = nativeImage.createFromPath(icon2xPath);
+  const icon = makeCircular(rawIcon, 2.0);
+  icon.setTemplateImage(false);
+  normalIcon = icon;
+
+  tray = new Tray(icon);
+  tray.setToolTip('Dorothy');
+
+  tray.on('click', () => {
+    if (tray) {
+      toggleTrayPanel(tray.getBounds());
+    }
+  });
+
+  // Register the attention callback so agents-tick can drive badge updates
+  setTrayAttentionCallback(updateTrayAttention);
+}
+
+export function updateTrayAttention(hasWaiting: boolean): void {
+  if (!tray || !normalIcon) return;
+
+  if (hasWaiting && !showingBadge) {
+    if (!badgeIcon) {
+      badgeIcon = createBadgeIcon(normalIcon);
+    }
+    // When showing badge, don't use template image so the red dot is visible
+    badgeIcon.setTemplateImage(false);
+    tray.setImage(badgeIcon);
+    showingBadge = true;
+  } else if (!hasWaiting && showingBadge) {
+    tray.setImage(normalIcon);
+    showingBadge = false;
+  }
+}
+
+export function rebuildTrayMenu() {
+  // No-op: the tray panel is live via IPC, no native menu to rebuild
 }
 
 export function destroyTray() {
+  destroyTrayPanel();
   if (tray) {
     tray.destroy();
     tray = null;

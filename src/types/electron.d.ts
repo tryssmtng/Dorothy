@@ -1,3 +1,18 @@
+export type DisplayStatus = 'working' | 'waiting' | 'done' | 'ready' | 'stopped' | 'error';
+
+export interface AgentTickItem {
+  id: string;
+  name: string;
+  character: string;
+  status: 'idle' | 'running' | 'completed' | 'error' | 'waiting';
+  displayStatus: DisplayStatus;
+  statusLine: string;
+  currentTask: string;
+  projectName: string;
+  lastActivity: string;
+  provider: string;
+}
+
 export interface AgentEvent {
   type: string;
   agentId: string;
@@ -127,6 +142,7 @@ export interface AgentStatus {
   ptyId?: string;
   character?: AgentCharacter;
   name?: string;
+  statusLine?: string;    // ANSI-stripped last meaningful output line
   pathMissing?: boolean; // True if project path no longer exists
   skipPermissions?: boolean; // If true, use --dangerously-skip-permissions flag
   provider?: AgentProvider;   // 'claude' (default) or 'local' (Tasmania)
@@ -195,6 +211,7 @@ export interface ElectronAPI {
     onComplete: (callback: (event: AgentEvent) => void) => () => void;
     onToolUse: (callback: (event: AgentEvent) => void) => () => void;
     onStatus?: (callback: (event: { type: string; agentId: string; status: string; timestamp: string }) => void) => () => void;
+    onTick?: (callback: (agents: AgentTickItem[]) => void) => () => void;
   };
 
   // Skills management
@@ -274,6 +291,7 @@ export interface ElectronAPI {
       notificationsEnabled: boolean;
       notifyOnWaiting: boolean;
       notifyOnComplete: boolean;
+      notifyOnStop: boolean;
       notifyOnError: boolean;
       telegramEnabled: boolean;
       telegramBotToken: string;
@@ -295,6 +313,12 @@ export interface ElectronAPI {
       tasmaniaEnabled: boolean;
       tasmaniaServerPath: string;
       defaultProvider?: string;
+      notificationSounds?: {
+        waiting?: string;
+        complete?: string;
+        stop?: string;
+        error?: string;
+      };
       terminalFontSize?: number;
       terminalTheme?: 'dark' | 'light';
       cliPaths?: {
@@ -312,6 +336,7 @@ export interface ElectronAPI {
       notificationsEnabled?: boolean;
       notifyOnWaiting?: boolean;
       notifyOnComplete?: boolean;
+      notifyOnStop?: boolean;
       notifyOnError?: boolean;
       telegramEnabled?: boolean;
       telegramBotToken?: string;
@@ -333,6 +358,12 @@ export interface ElectronAPI {
       tasmaniaEnabled?: boolean;
       tasmaniaServerPath?: string;
       defaultProvider?: string;
+      notificationSounds?: {
+        waiting?: string;
+        complete?: string;
+        stop?: string;
+        error?: string;
+      };
       terminalFontSize?: number;
       terminalTheme?: 'dark' | 'light';
       cliPaths?: {
@@ -433,6 +464,7 @@ export interface ElectronAPI {
   dialog: {
     openFolder: () => Promise<string | null>;
     openFiles: () => Promise<string[]>;
+    openAudio: () => Promise<string | null>;
   };
 
   // Shell operations
@@ -796,6 +828,8 @@ export interface ElectronAPI {
   // Tray menu events
   tray?: {
     onFocusAgent: (callback: (agentId: string) => void) => () => void;
+    showMainWindow: () => Promise<{ success: boolean }>;
+    quit: () => Promise<{ success: boolean }>;
   };
 
   // Get home path helper

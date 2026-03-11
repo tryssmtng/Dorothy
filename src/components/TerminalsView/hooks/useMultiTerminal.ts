@@ -7,6 +7,7 @@ import type { AgentStatus } from '@/types/electron';
 import { isElectron } from '@/hooks/useElectron';
 import { TERMINAL_CONFIG } from '../constants';
 import { getTerminalTheme } from '@/components/AgentWorld/constants';
+import { attachShiftEnterHandler } from '@/lib/terminal';
 
 interface TerminalEntry {
   terminal: Terminal;
@@ -188,6 +189,12 @@ export function useMultiTerminal({ agents, initialFontSize, onFontSizeChange, th
       // Step 4: Fit again after content is written (may affect scrollbar)
       setTimeout(() => safeFit(agentId, entry), 50);
       setTimeout(() => safeFit(agentId, entry), 200);
+
+      attachShiftEnterHandler(term, (data) => {
+        if (isElectron()) {
+          window.electronAPI!.agent.sendInput({ id: agentId, input: data }).catch(() => {});
+        }
+      });
 
       // Forward keyboard input from xterm to PTY
       // Filter out xterm focus in/out reports (\x1b[I / \x1b[O) that Claude Code
