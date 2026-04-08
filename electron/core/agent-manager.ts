@@ -212,6 +212,9 @@ export function loadAgents() {
       agent.status = 'idle';
       agent.ptyId = undefined;
 
+      // Ensure critical array fields exist (prevents push-on-undefined crashes)
+      if (!Array.isArray(agent.output)) agent.output = [];
+
       // Migrate legacy skipPermissions boolean → permissionMode
       if (!agent.permissionMode) {
         agent.permissionMode = agent.skipPermissions ? 'auto' : 'normal';

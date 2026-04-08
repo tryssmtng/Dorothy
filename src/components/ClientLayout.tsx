@@ -140,11 +140,13 @@ function ClientLayoutInner({ children }: { children: React.ReactNode }) {
     window.electronAPI?.updates?.quitAndInstall();
   }, []);
 
-  // Initialize dark mode from localStorage on mount
+  // KALIYA: Dark mode ON by default
   useEffect(() => {
     const saved = localStorage.getItem('dorothy-dark-mode');
-    if (saved === 'true') {
+    if (saved === null || saved === 'true') {
       setDarkMode(true);
+    } else if (saved === 'false') {
+      setDarkMode(false);
     }
   }, [setDarkMode]);
 

@@ -142,84 +142,91 @@
    DOROTHY — DARK THEME OVERRIDES
    ============================================ */
 .dark {
-  /* Surfaces - Deep warm grays */
-  --background: #1A1714;
-  --foreground: #E8DEC8;
-  --card: #242019;
-  --card-foreground: #E8DEC8;
-  --popover: #242019;
-  --popover-foreground: #E8DEC8;
+  /* KALIYA Dark Theme — Military-grade, sharp, red accent */
 
-  /* Primary - Teal stays vibrant, slightly brighter for dark bg */
-  --primary: #4DB8B0;
-  --primary-foreground: #1A1714;
+  /* Surfaces - Deep blacks/charcoal */
+  --background: #0a0a0c;
+  --foreground: #e4e4e7;
+  --card: #111114;
+  --card-foreground: #e4e4e7;
+  --popover: #141417;
+  --popover-foreground: #e4e4e7;
 
-  /* Secondary - Darker warm tone */
-  --secondary: #2E2922;
-  --secondary-foreground: #E8DEC8;
+  /* Primary - KALIYA Red */
+  --primary: #dc2626;
+  --primary-foreground: #fafafa;
 
-  /* Muted - Dark warm tone */
-  --muted: #2E2922;
-  --muted-foreground: #9A8E78;
+  /* Secondary - Dark zinc */
+  --secondary: #1c1c20;
+  --secondary-foreground: #d4d4d8;
 
-  /* Accent - Copper stays warm */
-  --accent: #CD7F4A;
-  --accent-foreground: #1A1714;
+  /* Muted - Charcoal */
+  --muted: #1c1c20;
+  --muted-foreground: #71717a;
 
-  /* Destructive - Slightly brighter for dark bg */
-  --destructive: #D4634D;
+  /* Accent - Bright red */
+  --accent: #ef4444;
+  --accent-foreground: #fafafa;
+
+  /* Destructive */
+  --destructive: #f87171;
 
   /* Borders & inputs */
-  --border: #3A342B;
-  --input: #2E2922;
-  --ring: #4DB8B0;
+  --border: #27272a;
+  --input: #1c1c20;
+  --ring: #dc2626;
 
   /* Legacy variables */
-  --bg-primary: #1A1714;
-  --bg-secondary: #242019;
-  --bg-tertiary: #2E2922;
-  --bg-elevated: #302B23;
-  --border-primary: #3A342B;
-  --border-accent: #4A4237;
-  --text-primary: #E8DEC8;
-  --text-secondary: #9A8E78;
-  --text-muted: #7A6E58;
+  --bg-primary: #0a0a0c;
+  --bg-secondary: #111114;
+  --bg-tertiary: #1c1c20;
+  --bg-elevated: #202024;
+  --border-primary: #27272a;
+  --border-accent: #3f3f46;
+  --text-primary: #e4e4e7;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
 
-  /* Status colors - Same hues, adjusted for dark bg */
-  --success: #5AAF62;
-  --success-muted: rgba(90, 175, 98, 0.15);
-  --warning: #CD7F4A;
-  --warning-muted: rgba(205, 127, 74, 0.15);
-  --danger: #D4634D;
-  --danger-muted: rgba(212, 99, 77, 0.15);
-  --info: #4DB8B0;
-  --info-muted: rgba(77, 184, 176, 0.15);
+  /* Status colors */
+  --success: #22c55e;
+  --success-muted: rgba(34, 197, 94, 0.12);
+  --warning: #f59e0b;
+  --warning-muted: rgba(245, 158, 11, 0.12);
+  --danger: #ef4444;
+  --danger-muted: rgba(239, 68, 68, 0.12);
+  --info: #3b82f6;
+  --info-muted: rgba(59, 130, 246, 0.12);
 
   /* Accent colors */
-  --accent-blue: #4DB8B0;
-  --accent-blue-dim: #3D9B94;
-  --accent-green: #5AAF62;
-  --accent-green-dim: #4A8B50;
-  --accent-amber: #CD7F4A;
-  --accent-amber-dim: #B86E3C;
-  --accent-red: #D4634D;
-  --accent-red-dim: #B85440;
-  --accent-purple: #A080B2;
-  --accent-purple-dim: #8B6B9B;
-  --accent-cyan: #4DB8B0;
-  --accent-cyan-dim: #3D9B94;
+  --accent-blue: #3b82f6;
+  --accent-blue-dim: #2563eb;
+  --accent-green: #22c55e;
+  --accent-green-dim: #16a34a;
+  --accent-amber: #f59e0b;
+  --accent-amber-dim: #d97706;
+  --accent-red: #ef4444;
+  --accent-red-dim: #dc2626;
+  --accent-purple: #a855f7;
+  --accent-purple-dim: #9333ea;
+  --accent-cyan: #06b6d4;
+  --accent-cyan-dim: #0891b2;
 
-  /* Charts - Same spectrum (already vibrant) */
-  --chart-1: #4DB8B0;
-  --chart-2: #CD7F4A;
-  --chart-3: #5AAF62;
-  --chart-4: #D4634D;
-  --chart-5: #E8DEC8;
+  /* Charts */
+  --chart-1: #dc2626;
+  --chart-2: #3b82f6;
+  --chart-3: #22c55e;
+  --chart-4: #f59e0b;
+  --chart-5: #a855f7;
 }
 
-/* Dark mode scrollbar overrides */
+/* KALIYA dark mode scrollbar */
 .dark * {
-  scrollbar-color: #4A4237 #2E2922;
+  scrollbar-color: #3f3f46 #18181b;
+}
+
+/* KALIYA sidebar glow on active */
+.dark .sidebar-active {
+  box-shadow: inset 3px 0 0 #dc2626;
 }
 .dark *::-webkit-scrollbar-track {
   background: #2E2922;
