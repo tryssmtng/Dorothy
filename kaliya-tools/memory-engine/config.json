@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "embedding": {
+    "model": "all-MiniLM-L6-v2",
+    "model_priority": ["all-MiniLM-L6-v2"],
+    "model_path": "~/.claude/memory-engine/models/",
+    "dimension": 384,
+    "lazy_load": true,
+    "auto_select": false
+  },
+  "search": {
+    "default_top_k": 8,
+    "candidate_multiplier": 3,
+    "rrf_k": 60,
+    "mmr_lambda": 0.7,
+    "decay_half_life_days": 30,
+    "max_result_chars": 4096
+  },
+  "chunking": {
+    "target_tokens": 400,
+    "overlap_tokens": 80,
+    "min_chunk_tokens": 50
+  },
+  "daily_logs": {
+    "archive_after_days": 30,
+    "load_days_at_start": 2
+  },
+  "indexer": {
+    "interval_seconds": 900,
+    "session_indexing": true,
+    "max_session_summary_chars": 2000
+  },
+  "memory_paths": {
+    "base": "~/.claude/projects",
+    "global": "~/.claude/projects/-Users-niwash/memory",
+    "index_dir": "~/.claude/memory-engine/index",
+    "model_dir": "~/.claude/memory-engine/models"
+  },
+  "evergreen_patterns": [
+    "MEMORY.md",
+    "mistakes-learnings.md",
+    "credentials-secrets.md",
+    "device-environment.md",
+    "workflow-patterns.md",
+    "malik-preferences.md",
+    "kali-openclaw.md",
+    "shopify-store.md",
+    "marketing-seo.md",
+    "accounts-credentials.md",
+    "heartbeat.md"
+  ],
+  "importance": {
+    "enabled": true,
+    "critical_threshold": 5.0,
+    "decay_exempt_above": 5.0
+  },
+  "query_expansion": {
+    "enabled": true,
+    "static_map": {
+      "ssh": ["remote", "server", "terminal", "scp", "sshpass", "deploy"],
+      "deploy": ["deployment", "production", "flyctl", "docker", "ci", "cd"],
+      "error": ["bug", "fix", "traceback", "exception", "crash", "fail"],
+      "ui": ["frontend", "css", "react", "tailwind", "component", "design"],
+      "api": ["endpoint", "rest", "http", "request", "response", "route"],
+      "db": ["database", "sqlite", "mongo", "query", "schema", "sql"],
+      "auth": ["login", "token", "jwt", "session", "password", "oauth"],
+      "hook": ["pre-compact", "session-start", "trigger", "automation", "guard"],
+      "frida": ["xposed", "bypass", "root", "injection", "hooking", "instrument"],
+      "adb": ["android", "device", "shell", "logcat", "phone"],
+      "memory": ["recall", "remember", "forget", "context", "compact", "daily"],
+      "test": ["verify", "check", "validate", "assert", "spec", "qa"],
+      "config": ["settings", "preferences", "environment", "env", "setup"],
+      "search": ["find", "query", "lookup", "grep", "match"]
+    }
+  },
+  "compression": {
+    "enabled": true,
+    "auto_compress_after_days": 14,
+    "deduplicate": true
+  },
+  "watcher": {
+    "enabled": true,
+    "watch_filter": "*.md"
+  },
+  "cross_references": {
+    "enabled": true,
+    "max_linked_per_result": 2
+  },
+  "vector_search": {
+    "use_sqlite_vec": false,
+    "auto_enable_threshold": 5000
+  }
+}

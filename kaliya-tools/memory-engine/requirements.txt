@@ -1,0 +1,5 @@
+sentence-transformers>=3.0.0
+fastmcp>=2.0.0
+numpy>=1.26.0
+watchfiles>=0.20
+sqlite-vec>=0.1.7  # Optional: native vector search (enable in config.json)
