@@ -92,22 +92,22 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
         transition={{ duration: 0.2, ease: 'easeInOut' }}
         className="fixed left-0 top-0 h-screen bg-card border-r border-border flex-col z-50 hidden lg:flex"
       >
-        {/* Logo — top area also serves as drag region for macOS traffic lights */}
-        <div className="window-drag flex items-center px-4 pt-5 pb-4 border-b border-border shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-gradient-to-br from-red-600 to-red-900 flex items-center justify-center">
-              <span className="text-white font-black text-lg">K</span>
+        {/* Logo — KALIYA branding */}
+        <div className="window-drag flex items-center px-4 pt-8 pb-3 border-b border-border/50 shrink-0">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-md overflow-hidden shrink-0 bg-gradient-to-br from-red-500 via-red-600 to-red-800 flex items-center justify-center shadow-lg shadow-red-900/30">
+              <span className="text-white font-black text-sm">K</span>
             </div>
             {showLabels && (
               <div>
-                <span className="text-xl font-black tracking-wider text-foreground">KALIYA</span>
+                <span className="text-lg font-black tracking-widest text-foreground/90 uppercase">Kaliya</span>
               </div>
             )}
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
+        <nav className="flex-1 py-2 px-2 space-y-0.5 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = item.href === '/'
               ? pathname === '/'
@@ -117,10 +117,10 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
                 key={item.href}
                 href={item.href}
                 className={`
-                  group flex items-center gap-3 px-3 py-2.5 transition-all duration-150 cursor-pointer
+                  group flex items-center gap-2.5 px-3 py-2 rounded-md transition-all duration-150 cursor-pointer text-[13px]
                   ${isActive
-                    ? 'bg-primary/20 text-primary font-medium'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
+                    ? 'bg-red-500/15 text-red-400 font-semibold border-l-2 border-red-500'
+                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
                   }
                 `}
               >
