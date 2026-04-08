@@ -95,8 +95,8 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
         {/* Logo — KALIYA branding */}
         <div className="window-drag flex items-center px-4 pt-8 pb-3 border-b border-border/50 shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-md overflow-hidden shrink-0 bg-gradient-to-br from-red-500 via-red-600 to-red-800 flex items-center justify-center shadow-lg shadow-red-900/30">
-              <span className="text-white font-black text-sm">K</span>
+            <div className="w-8 h-8 rounded-md overflow-hidden shrink-0 shadow-lg shadow-red-900/30">
+              <img src="/kaliya-icon.svg" alt="KALIYA" className="w-full h-full" />
             </div>
             {showLabels && (
               <div>
@@ -268,12 +268,12 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
           style={{ width: sidebarWidth }}
         >
           {/* Logo */}
-          <div className="h-14 flex items-center px-4 border-b border-border">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-gradient-to-br from-red-600 to-red-900 flex items-center justify-center">
-                <span className="text-white font-black text-lg">K</span>
+          <div className="h-14 flex items-center px-4 border-b border-border/50">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-md overflow-hidden shrink-0 shadow-lg shadow-red-900/30">
+                <img src="/kaliya-icon.svg" alt="KALIYA" className="w-full h-full" />
               </div>
-              <span className="text-xl font-black tracking-wider text-foreground">KALIYA</span>
+              <span className="text-lg font-black tracking-widest text-foreground/90 uppercase">Kaliya</span>
             </div>
           </div>
 
