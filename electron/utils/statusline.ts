@@ -11,14 +11,14 @@ set -euo pipefail
 
 INPUT=$(cat)
 
-# --- Extract rate_limits and write to file for Dorothy Usage page ---
+# --- Extract rate_limits and write to file for KALIYA Usage page ---
 RATE_LIMITS_FILE="$HOME/.dorothy/rate-limits.json"
 RATE_LIMITS=$(echo "$INPUT" | jq -c '.rate_limits // empty' 2>/dev/null || true)
 if [ -n "$RATE_LIMITS" ] && [ "$RATE_LIMITS" != "null" ]; then
   echo "$RATE_LIMITS" > "$RATE_LIMITS_FILE" 2>/dev/null || true
 fi
 
-# --- Accumulate token stats per session for Dorothy Usage page ---
+# --- Accumulate token stats per session for KALIYA Usage page ---
 TOKEN_STATS_FILE="$HOME/.dorothy/token-stats.json"
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty' 2>/dev/null || true)
 if [ -n "$SESSION_ID" ]; then

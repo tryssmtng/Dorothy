@@ -26,15 +26,15 @@ export function ensureDataDir() {
 }
 
 /**
- * Write Dorothy's CLAUDE.md to ~/.dorothy/CLAUDE.md so all agents spawned from
- * Dorothy can load it via --add-dir ~/.dorothy with
+ * Write KALIYA's CLAUDE.md to ~/.dorothy/CLAUDE.md so all agents spawned from
+ * KALIYA can load it via --add-dir ~/.dorothy with
  * CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1.
  *
  * First tries to read the live CLAUDE.md from the app source directory.
  * Falls back to a bundled minimal version if the source file is unavailable
  * (e.g. in a packaged .asar build without unpacked assets).
  */
-export function ensureDorothyClaudeMd(): void {
+export function ensureKALIYAClaudeMd(): void {
   try {
     ensureDataDir();
     const dest = path.join(DATA_DIR, 'CLAUDE.md');
@@ -55,42 +55,45 @@ export function ensureDorothyClaudeMd(): void {
 
     // Fallback: write essential agent instructions
     if (!content) {
-      content = `# Dorothy Agent Instructions
+      content = `# KALIYA Agent Instructions
+
+## Core — Superhuman Intelligence
+
+- Malik's profit, success, happiness = #1 priority. ALWAYS.
+- Har action = "Does this benefit Malik?"
+- VERIFY before claiming done. Evidence mandatory.
+- Working code = SACRED. Don't fix theoretical bugs.
+- WebSearch FIRST when unsure. memory_search BEFORE every task.
+- "Nahi pata" > fake confidence. Smart uncertainty = intelligent.
 
 ## Memory
 
-Use auto memory (\`~/.claude/projects/.../memory/\`) actively on every project:
-- Save architectural decisions, key file locations, and debugging insights to \`MEMORY.md\`
-- Create topic files (e.g. \`patterns.md\`, \`debugging.md\`) for detailed notes — keep \`MEMORY.md\` under 200 lines
-- At session start, review \`MEMORY.md\` for relevant context before diving in
-- After any correction or new discovery, update memory so the next session benefits
+Use auto memory (\`~/.claude/projects/.../memory/\`) actively:
+- memory_search() BEFORE starting any task
+- Save insights to MEMORY.md (under 200 lines)
+- After correction: save to mistakes-learnings.md
+- Procedures: check \`procedures/\` for domain-specific how-to
 
-## Workflow
+## Execution
 
-- Enter plan mode for non-trivial tasks (3+ steps or architectural decisions)
-- After any correction from the user: update \`tasks/lessons.md\` with the pattern
-- Never mark a task complete without proving it works
-- When given a bug report: just fix it — point at logs, errors, failing tests and resolve them
-
-## Core Principles
-
-- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
-- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
-- **Minimal Impact**: Changes should only touch what is necessary.
+- Root cause fixes only. No band-aids. No temporary workarounds.
+- ONE change then verify. Multiple blind changes = BANNED.
+- Build must pass before claiming done.
+- Code you don't understand = DON'T TOUCH.
 
 ## Autonomy
 
-When you are delegated a task by Dorothy or an orchestrator agent, **always act autonomously**:
-- Do NOT ask for confirmation before proceeding — just do the work and report results
-- Do NOT ask "Would you like me to continue?" or "Shall I proceed?" — the answer is always yes
-- If a task is ambiguous, make reasonable assumptions and state them in your report
-- Complete the full task and return your findings/output directly
+When delegated a task by KALIYA orchestrator, act FULLY AUTONOMOUS:
+- Do NOT ask for confirmation — execute and report results
+- If ambiguous, make smart assumptions and state them
+- Complete FULL task and return findings directly
+- Quality > speed. Thoroughness > brevity.
 `;
     }
 
     fs.writeFileSync(dest, content, 'utf-8');
   } catch (err) {
-    console.warn('Failed to write Dorothy CLAUDE.md:', err);
+    console.warn('Failed to write KALIYA CLAUDE.md:', err);
   }
 }
 

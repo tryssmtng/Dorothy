@@ -32,8 +32,8 @@ export default function VaultPage() {
             }
           `}
         >
-          <img src="/dorothy-without-text.png" alt="Dorothy" className="w-4 h-4 object-contain" />
-          Dorothy Vault
+          <img src="/dorothy-without-text.png" alt="KALIYA" className="w-4 h-4 object-contain" />
+          KALIYA Vault
         </button>
         <button
           onClick={() => setActiveTab('obsidian')}

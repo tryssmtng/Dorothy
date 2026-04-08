@@ -294,7 +294,7 @@ export function registerWorldHandlers(deps: WorldHandlerDependencies): void {
       const result = await dialog.showSaveDialog(win, {
         title: 'Export World',
         defaultPath: `${safeName}.dorothy-world`,
-        filters: [{ name: 'Dorothy World', extensions: ['dorothy-world'] }],
+        filters: [{ name: 'KALIYA World', extensions: ['dorothy-world'] }],
       });
 
       if (result.canceled || !result.filePath) {
@@ -316,7 +316,7 @@ export function registerWorldHandlers(deps: WorldHandlerDependencies): void {
 
       const result = await dialog.showOpenDialog(win, {
         title: 'Import World',
-        filters: [{ name: 'Dorothy World', extensions: ['dorothy-world'] }],
+        filters: [{ name: 'KALIYA World', extensions: ['dorothy-world'] }],
         properties: ['openFile'],
       });
 

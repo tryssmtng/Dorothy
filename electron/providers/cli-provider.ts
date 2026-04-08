@@ -120,7 +120,7 @@ export interface CLIProvider {
   /** Base path for project memory directories */
   getMemoryBasePath(): string;
 
-  /** Get the Dorothy --add-dir equivalent flag for this provider */
+  /** Get the KALIYA --add-dir equivalent flag for this provider */
   getAddDirFlag(): string;
 
   /** Generate the shell script content for scheduled tasks */

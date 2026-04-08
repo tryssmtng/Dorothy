@@ -3,13 +3,13 @@ import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 
 export const metadata: Metadata = {
-  title: "Dorothy | Agent Control Center",
-  description: "Manage and monitor your Claude Code agents, projects, and tasks in real-time",
+  title: "KALIYA | Superhuman Command Center",
+  description: "Malik's hyper-intelligent agent orchestration engine — multi-agent control, memory, automation",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Dorothy",
+    title: "KALIYA",
   },
   formatDetection: {
     telephone: false,

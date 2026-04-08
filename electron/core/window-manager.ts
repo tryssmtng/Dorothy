@@ -30,9 +30,9 @@ export function createWindow() {
     height: 1000,
     minWidth: 1200,
     minHeight: 800,
-    title: 'Dorothy',
+    title: 'KALIYA',
     titleBarStyle: 'hiddenInset',
-    backgroundColor: '#F0E8D5',
+    backgroundColor: '#0a0a0a',
     webPreferences: {
       preload: path.join(__dirname, '..', 'preload.js'),
       contextIsolation: true,
