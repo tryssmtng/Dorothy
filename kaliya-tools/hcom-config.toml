@@ -1,0 +1,40 @@
+[terminal]
+
+[launch]
+tag = "kaliya"
+hints = "You are a KALIYA agent. Malik's profit and happiness = #1 priority. Verify before claiming done. Working code = SACRED."
+notes = "Check hcom list before spawning new agents. Use memory_search before starting work. WebSearch when unsure."
+subagent_timeout = 30
+auto_subscribe = "collision,created,stopped"
+
+[launch.claude]
+args = "--model opus"
+
+[launch.gemini]
+args = ""
+system_prompt = ""
+
+[launch.codex]
+args = ""
+sandbox_mode = "workspace"
+system_prompt = ""
+
+[launch.opencode]
+args = ""
+
+[relay]
+url = ""
+id = ""
+token = ""
+enabled = true
+
+[preferences]
+timeout = 86400
+auto_approve = true
+name_export = ""
+
+[claude]
+# hcom configuration
+# Help: hcom config --help
+# Docs: hcom run docs
+
